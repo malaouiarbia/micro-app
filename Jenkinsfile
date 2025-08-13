@@ -4,6 +4,7 @@ pipeline {
     environment {
         DOCKERHUB_USERNAME = 'arbiamalaoui1'
         DOCKERHUB_REPO = 'micro-app'
+        TRIVY_CACHE = '/var/lib/jenkins/.cache/trivy'
       //  SONARQUBE_ENV = 'sonarqube-server'
     }
 
@@ -38,7 +39,12 @@ pipeline {
             steps {
                 script {
                     def services = ["auth", "client", "expiration", "orders", "payments", "tickets"]
-                    sh "mkdir -p trivy-reports"
+                    
+                    // Ensure Trivy cache exists
+                    sh """
+                        mkdir -p ${TRIVY_CACHE}
+                        mkdir -p trivy-reports
+                    """
 
                     for (service in services) {
                         def imageName = "${DOCKERHUB_USERNAME}/${DOCKERHUB_REPO}-${service}:latest"
@@ -48,10 +54,15 @@ pipeline {
                         // Build Docker image
                         sh "docker build -t ${imageName} ${servicePath}"
 
-                        // Trivy Scan
+                        // Trivy Scan with optimizations
                         echo "Scanning image ${imageName} with Trivy..."
                         sh """
-                            trivy image --severity HIGH,CRITICAL --no-progress \
+                            trivy image \
+                                --severity HIGH,CRITICAL \
+                                --no-progress \
+                                --scanners vuln \
+                                --timeout 10m \
+                                --cache-dir ${TRIVY_CACHE} \
                                 --format table \
                                 --output trivy-reports/${service}_report.txt \
                                 ${imageName}
