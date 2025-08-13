@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  auth:
+    build: 
+      context: .
+      dockerfile: auth/Dockerfile
+    ports:
+      - "3050:3000"
+    container_name: auth-service
+
+  client:
+    build: 
+      context: .
+      dockerfile: client/Dockerfile
+    ports:
+      - "3040:3000"
+    container_name: client-service
+
+  expiration:
+    build: 
+      context: .
+      dockerfile: expiration/Dockerfile
+    ports:
+      - "3030:3000"
+    container_name: expiration-service
+
+  orders:
+    build: 
+      context: .
+      dockerfile: orders/Dockerfile
+    ports:
+      - "3020:3000"
+    container_name: orders-service
+
+  payments:
+    build: 
+      context: .
+      dockerfile: payments/Dockerfile
+    ports:
+      - "3010:3000"
+    container_name: payments-service
