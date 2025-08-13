@@ -2,38 +2,38 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_USERNAME = 'jihengharbi'
-        DOCKERHUB_REPO = 'jihen'
+        DOCKERHUB_USERNAME = 'arbiamalaoui1'
+        DOCKERHUB_REPO = 'micro-app'
       //  SONARQUBE_ENV = 'sonarqube-server'
     }
 
     stages {
         stage('Checkout code') {
             steps {
-                git 'https://github.com/gharbijihen/micro-app.git'
+                git 'https://github.com/malaouiarbia/micro-app.git'
             }
         }
 
     
-  stage('SonarQube Analysis for all projects') {
-    steps {
-        withCredentials([string(credentialsId: 'jenkins-sonarqube-token', variable: 'SONAR_TOKEN')]) {
-            script {
-                def projects = ["auth", "client", "expiration", "orders", "payments", "tickets"]
-                for (proj in projects) {
-                    sh """
-                        echo "Running sonar scanner for project ${proj}..."
-                        npx sonar-scanner -X \
-                            -Dsonar.projectKey=${proj} \
-                            -Dsonar.sources=. \
-                            -Dsonar.host.url=http://localhost:9000 \
-                            -Dsonar.login=${SONAR_TOKEN}
-                    """
-                }
-            }
-        }
-    }
-}
+//   stage('SonarQube Analysis for all projects') {
+//     steps {
+//         withCredentials([string(credentialsId: 'jenkins-sonarqube-token', variable: 'SONAR_TOKEN')]) {
+//             script {
+//                 def projects = ["auth", "client", "expiration", "orders", "payments", "tickets"]
+//                 for (proj in projects) {
+//                     sh """
+//                         echo "Running sonar scanner for project ${proj}..."
+//                         npx sonar-scanner -X \
+//                             -Dsonar.projectKey=${proj} \
+//                             -Dsonar.sources=. \
+//                             -Dsonar.host.url=http://localhost:9000 \
+//                             -Dsonar.login=${SONAR_TOKEN}
+//                     """
+//                 }
+//             }
+//         }
+//     }
+// }
         stage('Build, Scan & Push Microservices') {
             steps {
                 script {
