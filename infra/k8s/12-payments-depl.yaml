@@ -51,6 +51,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: payments-srv
+  namespace: default
 spec:
   selector:
     app: payments
