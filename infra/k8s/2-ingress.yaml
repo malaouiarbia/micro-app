@@ -17,6 +17,7 @@ spec:
             backend:
               service:
                 name: rabbit-srv
+                namespace: default
                 port:
                   number: 15672
     - host: ticketslokal.com
@@ -27,6 +28,7 @@ spec:
             backend:
               service:
                 name: payments-srv
+                namespace: default
                 port:
                   number: 3000
           - path: /api/users/?(.*)
@@ -34,6 +36,7 @@ spec:
             backend:
               service:
                 name: auth-srv
+                namespace: default
                 port:
                   number: 3000
           - path: /api/tickets/?(.*)
@@ -41,6 +44,7 @@ spec:
             backend:
               service:
                 name: tickets-srv
+                namespace: default
                 port:
                   number: 3000
           - path: /api/orders/?(.*)
@@ -48,6 +52,7 @@ spec:
             backend:
               service:
                 name: orders-srv
+                namespace: default
                 port:
                   number: 3000
           - path: /?(.*)
@@ -55,6 +60,7 @@ spec:
             backend:
               service:
                 name: client-srv
+                namespace: default
                 port:
                   number: 3000
 
